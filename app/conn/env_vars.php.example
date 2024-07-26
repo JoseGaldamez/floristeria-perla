@@ -1,0 +1,7 @@
+<?php
+// Cambiar el nombre de este fichero a env_vars.php
+// Poner los datos de acceso del usuario local
+$serverName = "";
+$userName = "";
+$password = "";
+$database = "";
