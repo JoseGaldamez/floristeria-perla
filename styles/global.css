@@ -1,3 +1,16 @@
+
+/* 
+Fuente titulos 
+Bebas Neue
+*/
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* 
+Fuente parrafos 
+Roboto
+*/
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=K2D:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 .bg-pink-primary {
     background-color: palevioletred;
 }
@@ -14,4 +27,68 @@
     font-size: 1.2rem;
     padding: 5px 40px;
     display: inline-block;
+}
+
+.btn-pink-primary-2 {
+    background-color: #D83466;
+    color: white;
+    font-size: 1.2rem;
+    padding: 5px 40px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.btn-pink-primary-2:hover {
+    background-color: #F87500;
+    color: white;
+    font-size: 1.2rem;
+    padding: 5px 40px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.btn-orange-primary{
+    background-color: #F87500;
+    color: white;
+    font-size: 1.2rem;
+    padding: 5px 40px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+/* estilos landing page */
+
+.lp-banner{
+    height: 60vh;
+    width: 100%;
+    background: url(../app/assets/images/banner-3.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.fs-1-1{
+    font-size: 4.5rem;
+}
+
+.font-titles{
+    font-family: 'Bebas Neue', cursive;
+}
+
+.font-paragraphs{
+    font-family: 'Roboto', sans-serif;
+}
+
+.font-space{
+    letter-spacing: 3px;
+}
+
+.card-custom img {
+    height: 200px;
+    object-fit: cover;
+}
+.price {
+    color: rgb(241, 57, 134);
+    font-weight: bold;
+    text-align: end;
 }
