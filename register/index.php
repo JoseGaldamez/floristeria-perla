@@ -13,37 +13,40 @@
             background-position: center;
             background-repeat: no-repeat;
         }
+
         .register-container {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
             margin-top: 50px;
         }
+
         .btn-pink {
-            background-color: #f752a4; 
+            background-color: #f752a4;
             border-color: #f752a4;
             color: white;
         }
+
         .btn-pink:hover {
-            background-color: #ff1493; 
+            background-color: #ff1493;
         }
     </style>
-    
+
 </head>
 
 <body>
 
-<div class="container">
-        <h1 class="text-center mt-5"></h1>
+    <div class="container mt-5">
 
-        <?php
-        include "../app/conn/conn.php";
-        ?>
+        <div class="text-center mt-5">
+            <img src="../assets/imagen/logo.webp" alt="Logotipo" width="auto" height="150px">
+        </div>
 
+        <h1 class="text-center"></h1>
         <div class="row justify-content-center">
             <div class="col-md-6 register-container">
-                <h2 class="text-center mt-3">Registro de Usuario</h2>
-                <form action="register.php" method="post">
+                <h2 class="text-center mb-3">Registro de Usuario</h2>
+                <form method="post" id="registerForm">
                     <div class="form-group">
                         <label for="username">Nombre de usuario</label>
                         <input type="text" class="form-control" id="username" name="username" required>
@@ -72,14 +75,15 @@
 
 
     <script>
-        
         document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
             var password = document.getElementById('password').value;
             var confirmPassword = document.getElementById('confirm_password').value;
 
             if (password !== confirmPassword) {
                 alert('Las contraseñas no coinciden.');
-                event.preventDefault(); 
+            } else {
+                location.href = "/";
             }
         });
     </script>

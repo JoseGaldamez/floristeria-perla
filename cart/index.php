@@ -14,7 +14,7 @@
     include '../app/includes/menu.php';
     ?>
 
-    <main class="container mt-5">
+    <main class="container mt-5 mb-5">
         <h2>Carrito de compras</h2>
 
         <div class="list-of-products border rounded p-2 mt-3">
@@ -165,6 +165,9 @@
 
     </main>
 
+    <?php
+    include '../app/includes/footer.php';
+    ?>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
