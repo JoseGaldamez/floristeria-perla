@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     location.href = "/admin/Registros?success=true"
                 }
             },
+            /*holllllla*/
             error: function (response) {
                 console.log('ERROR BLOCK');
                 console.log(response);
