@@ -1,7 +1,8 @@
 <?php
 // Cambiar el nombre de este fichero a env_vars.php
 // Poner los datos de acceso del usuario local
-$serverName = "";
-$userName = "";
+$serverName = "localhost";
+$userName = "root";
 $password = "";
-$database = "";
+$database = "floristetia_perla";
+

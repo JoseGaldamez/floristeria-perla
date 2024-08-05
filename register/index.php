@@ -74,20 +74,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirm_password').value;
-
-            if (password !== confirmPassword) {
-                alert('Las contraseñas no coinciden.');
-            } else {
-                location.href = "/";
-            }
-        });
-    </script>
-
 </body>
 
 </html>
