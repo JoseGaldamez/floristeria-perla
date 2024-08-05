@@ -73,8 +73,8 @@ $conn->close();
   include '../app/includes/menu.php';
   ?>
 
-  <div class="container pt-5">
-    <h2 class="text-pink mt-5 pt-5 mb-5">Perfil de usuario</h2>
+  <div class="container mt-5">
+    <h2 class="text-pink mt-5 mb-5">Perfil de usuario</h2>
     <hr>
 
     <?php if ($userData): ?>
