@@ -1,3 +1,57 @@
+<?php
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "floristeria_perla";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+$userData = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $userID = $_POST['userID'];
+    $name = $_POST['name'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $gender = $_POST['gender'];
+    $birthdate = $_POST['birthdate'];
+
+    // Validar y sanitizar los datos de entrada
+    $name = $conn->real_escape_string($name);
+    $address = $conn->real_escape_string($address);
+    $phone = $conn->real_escape_string($phone);
+    $gender = $conn->real_escape_string($gender);
+    $birthdate = $conn->real_escape_string($birthdate);
+
+    $sql = "UPDATE profiles SET name='$name', address='$address', phone='$phone', sex='$gender', birthday='$birthdate' WHERE userID=$userID";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Perfil actualizado con éxito";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Obtener los datos del usuario (suponiendo que el ID del usuario es 1 para este ejemplo)
+$userID = 1;  // Aquí debes obtener el ID del usuario actual de alguna manera
+$sql = "SELECT * FROM profiles WHERE userID = $userID";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+} else {
+    echo "No se encontraron datos para este usuario.";
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -68,84 +122,61 @@
             margin: 0;
             text-align: center;
         }
+
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
   <div class="container">
     <h2 class="text-pink">Perfil de usuario</h2>
+    <?php if ($userData): ?>
     <div class="profile-card">
       <img src="https://via.placeholder.com/150" class="img-thumbnail" alt="Foto de Perfil">
-      <h3>Nombre de Usuario</h3>
-      <p>El Progreso, Yoro, Honduras</p>
-      <p><strong>Dirección:</strong> El Progreso, Yoro, Honduras</p>
-      <p><strong>Teléfono:</strong> +504 3175 1455</p>
-      <p><strong>Género:</strong> Masculino</p>
-      <p><strong>Fecha de nacimiento:</strong> 15 de septiembre de 1991</p>
+      <h3><?php echo $userData['name']; ?></h3>
+      <p><?php echo $userData['location']; ?></p>
+      <p><strong>Dirección:</strong> <?php echo $userData['address']; ?></p>
+      <p><strong>Teléfono:</strong> <?php echo $userData['phone']; ?></p>
+      <p><strong>Género:</strong> <?php echo $userData['sex']; ?></p>
+      <p><strong>Fecha de nacimiento:</strong> <?php echo date("d de F de Y", strtotime($userData['birthday'])); ?></p>
+      <button id="editButton">Editar Información</button>
     </div>
     <h4 class="text-pink mt-4">Historial de compras</h4>
     <div class="purchase-history">
       <p>Sin compras por el momento...</p>
     </div>
+
+    <form action="" method="POST" class="edit-form" id="editForm">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" value="<?php echo $userData['name']; ?>" required><br>
+        <label for="address">Dirección:</label>
+        <input type="text" id="address" name="address" value="<?php echo $userData['address']; ?>" required><br>
+        <label for="phone">Teléfono:</label>
+        <input type="text" id="phone" name="phone" value="<?php echo $userData['phone']; ?>" required><br>
+        <label for="gender">Género:</label>
+        <select id="gender" name="gender" required>
+            <option value="Masculino" <?php echo $userData['sex'] == 'Masculino' ? 'selected' : ''; ?>>Masculino</option>
+            <option value="Femenino" <?php echo $userData['sex'] == 'Femenino' ? 'selected' : ''; ?>>Femenino</option>
+        </select><br>
+        <label for="birthdate">Fecha de nacimiento:</label>
+        <input type="date" id="birthdate" name="birthdate" value="<?php echo $userData['birthday']; ?>" required><br>
+        <input type="hidden" id="userID" name="userID" value="<?php echo $userData['userID']; ?>">
+        <button type="submit">Guardar Cambios</button>
+    </form>
+    <?php endif; ?>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const profileCard = document.querySelector('.profile-card');
-      const profilePic = profileCard.querySelector('img');
-      const profileName = profileCard.querySelector('h3');
-      const profileLocation = profileCard.querySelector('p:nth-child(3)');
-      const profileDetails = profileCard.querySelectorAll('p');
-      const purchaseHistoryContainer = document.querySelector('.purchase-history');
-      const purchaseHistory = purchaseHistoryContainer.querySelector('p');
+      const editButton = document.getElementById('editButton');
+      const editForm = document.getElementById('editForm');
 
-      // Ejemplo de datos de usuario (estos datos pueden ser obtenidos de un formulario o una API)
-      const userData = {
-        name: 'Juan Pérez',
-        location: 'El Progreso, Yoro, Honduras',
-        address: 'El Progreso, Yoro, Honduras',
-        phone: '+504 3175 1455',
-        gender: 'Masculino',
-        birthdate: '15 de septiembre de 1991',
-        profilePicUrl: 'https://via.placeholder.com/150',
-        purchases: []
-      };
-
-      // Función para actualizar la información del perfil
-      function updateProfile(user) {
-        profileName.textContent = user.name;
-        profileLocation.textContent = user.location;
-        profileDetails[1].innerHTML = `<strong>Dirección:</strong> ${user.address}`;
-        profileDetails[2].innerHTML = `<strong>Teléfono:</strong> ${user.phone}`;
-        profileDetails[3].innerHTML = `<strong>Género:</strong> ${user.gender}`;
-        profileDetails[4].innerHTML = `<strong>Fecha de nacimiento:</strong> ${user.birthdate}`;
-        profilePic.src = user.profilePicUrl;
-
-        // Actualizar historial de compras
-        if (user.purchases.length === 0) {
-          purchaseHistory.textContent = 'Sin compras por el momento...';
-        } else {
-          purchaseHistoryContainer.innerHTML = '';
-          user.purchases.forEach(purchase => {
-            const purchaseItem = document.createElement('p');
-            purchaseItem.textContent = `${purchase.date}: ${purchase.description} - ${purchase.amount}`;
-            purchaseHistoryContainer.appendChild(purchaseItem);
-          });
-        }
-      }
-
-      // Llamar a la función para actualizar el perfil con los datos de usuario
-      updateProfile(userData);
-
-      // Ejemplo de cómo añadir una compra al historial (esto puede ser parte de un formulario)
-      function addPurchase(date, description, amount) {
-        userData.purchases.push({ date, description, amount });
-        updateProfile(userData);
-      }
-
-      // Ejemplo de uso: añadir una compra después de 3 segundos
-      setTimeout(() => {
-       
-      }, 3000);
+      // Mostrar el formulario de edición al hacer clic en el botón "Editar Información"
+      editButton.addEventListener('click', function () {
+        editForm.style.display = 'block';
+      });
     });
   </script>
 </body>
