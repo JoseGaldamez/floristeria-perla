@@ -1,13 +1,14 @@
 <?php
 header('Content-type: application/json');
-include_once '../model/user.model.php';
+include_once '../model/register.model.php';
 
 if ($_POST) {
-    if (isset($_POST['username']) && $_POST['username'] && 
-        isset($_POST['email']) && $_POST['email'] && 
-        isset($_POST['password']) && $_POST['password'] && 
-        isset($_POST['confirm_password']) && $_POST['confirm_password']) {
-        
+    if (
+        isset($_POST['username']) && $_POST['username'] &&
+        isset($_POST['email']) && $_POST['email'] &&
+        isset($_POST['password']) && $_POST['password']
+    ) {
+
         if ($_POST['password'] !== $_POST['confirm_password']) {
             echo json_encode(array('success' => false, 'message' => "Las contraseñas no coinciden."));
         } else {
@@ -21,4 +22,3 @@ if ($_POST) {
         echo json_encode(array('success' => false, 'message' => "Parámetros faltantes."));
     }
 }
-?>

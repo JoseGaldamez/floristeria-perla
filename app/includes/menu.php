@@ -1,6 +1,6 @@
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-pink-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-pink-primary menu-top">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <div class="row align-middle">
@@ -28,7 +28,24 @@
                     <li class="nav-item">
                         <a class="nav-link <?php if ($_SERVER['REQUEST_URI'] == "/cart/") {
                                                 echo "active fw-bold text-decoration-underline";
-                                            }  ?>" href="/cart">Carrito</a>
+                                            }  ?>" href="/cart">
+                            Carrito
+                            <?php
+                            if ($_SERVER['REQUEST_URI'] == "/") {
+                                include_once 'app/conn/conn.php';
+                                include_once 'app/model/orders.model.php';
+                            } else {
+                                include_once '../app/model/orders.model.php';
+                                include_once '../app/conn/conn.php';
+                            }
+
+                            $resultCount = getCountActiveOrderByUser($conn, 6);
+
+                            echo '<span class="badge cart-count rounded-pill text-bg-danger">' . $resultCount . '</span>';
+
+                            ?>
+
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php if ($_SERVER['REQUEST_URI'] == "/profile/") {

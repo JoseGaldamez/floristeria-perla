@@ -11,6 +11,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -34,43 +36,50 @@
     ?>
 
     <div class="col-8 p-5">
-        <h2>Administrar Usuarios</h2>
+
+        <div class="row">
+            <div class="col-9">
+                <h2>Administrar Categorias</h2>
+            </div>
+            <div class="col-3 text-end">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#addUser" class="btn text-pink"> <i class="fa-solid fa-plus"></i> Agregar nueva</button>
+            </div>
+        </div>
         <hr>
-    </div>
 
-    <div class="col-3 text-end">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#addUser" class="btn text-pink"> <i class="fa-solid fa-plus"></i> Agregar nuevo</button>
-    </div>
-    <hr>
 
-    <?php
-    if (isset($_GET['success']) && $_GET['success'] === "true") {
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php
+        if (isset($_GET['success']) && $_GET['success'] === "true") {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>¡Éxito!</strong> Usuario guardado correctamente.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
-    }
-    ?>
-
-    <div>
-        <?php
-        include_once '../../app/model/user.model.php';
-        include_once '../../app/conn/conn.php';
-
-        $result = getAllUsers($conn);
-
-        if ($result->num_rows > 0) {
-            echo '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">Nombre</th><th scope="col">Correo Electrónico</th><th scope="col">Contraseña</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead><tbody>';
-            while ($row = $result->fetch_assoc()) {
-                echo '<tr><th scope="row">' . $row["userID"] . '</th><td>' . $row["UserName"] . '</td><td>' . $row["UserEmail"] . '</td><td>' . $row["userPassword"] . '</td><td>' . $row["status"] . '</td><td>
-                <button class="btn"><i class="fa-solid fa-pencil"></i></button>  
-                <button class="btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
-            }
-            echo '</tbody></table>';
-        } else {
-            echo "0 results";
         }
         ?>
+        <div id="alerts" class="mt-5">
+        </div>
+
+        <div>
+            <?php
+            include_once '../../app/model/register.model.php';
+            include_once '../../app/conn/conn.php';
+
+            $result = getAllUsers($conn);
+
+            if ($result->num_rows > 0) {
+                echo '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">Nombre</th><th scope="col">Correo Electrónico</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead><tbody>';
+                while ($row = $result->fetch_assoc()) {
+                    echo '<tr><th scope="row">' . $row["userID"] . '</th><td>' . $row["userName"] . '</td><td>' . $row["userEmail"] . '</td><td>' . $row["status"] . '</td><td>
+                <button class="btn"><i class="fa-solid fa-pencil"></i></button>  
+                <button class="btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
+                }
+                echo '</tbody></table>';
+            } else {
+                echo "0 results";
+            }
+            ?>
+        </div>
+
     </div>
 
     <!-- Modal -->
@@ -96,8 +105,8 @@
                             <input type="password" class="form-control" id="userPassword" placeholder="Contraseña" required>
                         </div>
                         <div class="mb-3">
-                            <label for="status" class="form-label">Estado</label>
-                            <input type="text" class="form-control" id="status" placeholder="Estado" required>
+                            <label for="userPassword2" class="form-label">Confirma la contraseña</label>
+                            <input type="password" class="form-control" id="userPassword2" placeholder="Confirmar contraseña" required>
                         </div>
                     </form>
                 </div>
@@ -110,6 +119,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <script src="../../scripts/sidebars.js"></script>
     <script src="users.js"></script>
 </body>

@@ -1,32 +1,31 @@
-function saveRegister() {
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirm_password").value;
+function createOrUpdateUser() {
+    const userName = document.getElementById('UserName').value;
+    const userEmail = document.getElementById('UserEmail').value;
+    const userPassword = document.getElementById('userPassword').value;
+    const userPassword2 = document.getElementById('userPassword2').value;
 
-    if (username == "" || email == "" || password == "" || confirmPassword == "") {
+
+    if (userName == "" || userEmail == "" || userPassword == "" || userPassword2 == "") {
         document.getElementById("alerts").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><strong>Campos Requeridos!</strong> Todos los campos son obligatorios.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         return;
     }
 
-    if (password !== confirmPassword) {
+    if (userPassword !== userPassword2) {
         document.getElementById("alerts").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><strong>Upss!</strong> Las contraseñas no coinciden.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         return;
     }
 
     $.ajax({
         type: 'POST',
-        url: '../app/controller/register.controller.php',
-        data: { username, email, password, confirm_password: confirmPassword },
+        url: '../../app/controller/register.controller.php',
+        data: { username: userName, email: userEmail, password: userPassword, confirm_password: userPassword2 },
         success: function (response) {
             console.log('SUCCESS BLOCK');
             console.log(response);
-            alert(response.message);
             if (response.success) {
-                location.href = "/"
+                location.href = "/admin/users?success=true"
             }
         },
-        /*holllllla*/
         error: function (response) {
             console.log('ERROR BLOCK');
             console.log(response);

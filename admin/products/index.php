@@ -73,19 +73,19 @@
                 while ($row = $result->fetch_assoc()) {
                     $statusClass = $row["status"] ? "text-success" : "text-danger";
                     $statusText = $row["status"] ? "Activo" : "Inactivo";
-                    echo '<tr><th scope="row">' 
-                    . $row["productID"] . '</th><td>' 
-                    . $row["productName"] . '</td><td>' 
-                    . $row["description"] . '</td><td>' 
-                    . $row["price"] . '</td><td>' 
-                    . $row["inventary"] . '</td><td><img src="' 
-                    . $row["image"] . '" class="product-image" data-product-name="' 
-                    . $row["productName"] . '" alt="Imagen del producto" width="50"></td><td>' 
-                    . $row["categoryName"] . '</td><td class="' . $statusClass . '">' . $statusText . '</td><td>
-                    <button class="btn" onclick="loadProductData(' 
-                    . $row["productID"] . ')"><i class="fa-solid fa-pencil"></i></button>  
-                    <button class="btn" onclick="showDeleteModal(' 
-                    . $row["productID"] . ')"><i class="fa-solid fa-trash"></i></button></td> </tr>';
+                    echo '<tr><th scope="row">'
+                        . $row["productID"] . '</th><td>'
+                        . $row["productName"] . '</td><td>'
+                        . $row["description"] . '</td><td>'
+                        . $row["price"] . '</td><td>'
+                        . $row["inventary"] . '</td><td><img src="'
+                        . $row["image"] . '" class="product-image" data-product-name="'
+                        . $row["productName"] . '" alt="Imagen del producto" width="50"></td><td>'
+                        . $row["categoryName"] . '</td><td class="' . $statusClass . '">' . $statusText . '</td><td>
+                    <button class="btn" onclick="loadProductData('
+                        . $row["productID"] . ')"><i class="fa-solid fa-pencil"></i></button>  
+                    <button class="btn" onclick="showDeleteModal('
+                        . $row["productID"] . ')"><i class="fa-solid fa-trash"></i></button></td> </tr>';
                 }
                 echo '</tbody></table>';
             } else {
@@ -95,7 +95,7 @@
         </div>
 
 
-            <!--parte de la paginación-->
+        <!--parte de la paginación-->
         <nav>
             <ul class="pagination">
                 <?php

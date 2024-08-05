@@ -19,8 +19,8 @@
   include '../app/includes/menu.php';
   ?>
 
-  <div class="container mt-5">
-    <h2 class="text-pink mt-5 mb-5">Perfil de usuario</h2>
+  <div class="container pt-5">
+    <h2 class="text-pink mt-5 pt-5 mb-5">Perfil de usuario</h2>
     <hr>
 
     <div class="row mt-5">

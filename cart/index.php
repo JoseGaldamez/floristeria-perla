@@ -14,8 +14,8 @@
     include '../app/includes/menu.php';
     ?>
 
-    <main class="container mt-5 mb-5">
-        <h2>Carrito de compras</h2>
+    <main class="container pt-5 mb-5">
+        <h2 class="mt-5 pt-5">Carrito de compras</h2>
 
         <div class="list-of-products border rounded p-2 mt-3">
 

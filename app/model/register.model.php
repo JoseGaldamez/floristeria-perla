@@ -1,19 +1,20 @@
 <?php
 
-function registerNewUser($conn, string $username, string $email, string $password)
+function registerNewUser(string $username, string $email, string $password)
 {
 
     include_once '../conn/conn.php';
+    $sql = "INSERT INTO users (userName, userEmail, userPassword, status) VALUES (?, ?, ?, ?)";
 
-    
-    $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
     $statement = $conn->prepare($sql);
+
     if ($statement === false) {
         die("Error en la preparación de consulta 'users': " . $conn->error);
     }
 
+    $status = 1;
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $statement->bind_param('sss', $username, $email, $hashed_password);
+    $statement->bind_param('sssi', $username, $email, $hashed_password, $status);
 
     $wasOk = $statement->execute();
     $statement->close();
@@ -30,4 +31,3 @@ function getAllUsers($conn)
     $conn->close();
     return $result;
 }
-?>

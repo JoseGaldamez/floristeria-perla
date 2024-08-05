@@ -79,9 +79,11 @@ function getProducts($conn, $limit, $offset)
             FROM products P 
             INNER JOIN categories C ON P.category = C.categoryID 
             LIMIT ? OFFSET ?";
+
     $stmt = $conn->prepare($sql);
+
     if ($stmt === false) {
-        die("Error en la preparación de consulta 'products'" . $conn->error);
+        return json_encode(array('num_rows' => 0));
     }
 
     $stmt->bind_param('ii', $limit, $offset);
