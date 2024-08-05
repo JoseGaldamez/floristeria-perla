@@ -54,97 +54,53 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-    </style>
-    
-    <style>
-        body {
-            background-color: #d0e4f8;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="../styles/global.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+  </style>
 
-        .container {
-            background-color: #fdeef4;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .text-pink {
-            color: #ff4081;
-        }
-
-        .img-thumbnail {
-            max-width: 150px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-        }
-
-        .profile-card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .profile-card p {
-            margin: 5px 0;
-            color: #6c757d;
-            text-align: justify;
-        }
-
-        .profile-card strong {
-            color: #343a40;
-        }
-
-        .purchase-history {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .purchase-history p {
-            margin: 0;
-            text-align: center;
-        }
-
-        .edit-form {
-            display: none;
-            margin-top: 20px;
-        }
-    </style>
 </head>
+
 <body>
-  <div class="container">
-    <h2 class="text-pink">Perfil de usuario</h2>
+
+  <?php
+  include '../app/includes/menu.php';
+  ?>
+
+  <div class="container mt-5">
+    <h2 class="text-pink mt-5 mb-5">Perfil de usuario</h2>
+    <hr>
+
     <?php if ($userData): ?>
-    <div class="profile-card">
-      <img src="https://via.placeholder.com/150" class="img-thumbnail" alt="Foto de Perfil">
-      <h3><?php echo $userData['name']; ?></h3>
-      <p><?php echo $userData['location']; ?></p>
+    <div class="row mt-5">
+      <div class="col-2 align-self-center">
+        <img src="../assets/imagen/placeholder.png" class="img-thumbnail rounded-circle" alt="Foto de Perfil">
+      </div>
+      <div class="col-8 align-self-center">
+        <h3><?php echo $userData['name']; ?></h3>
+        <p><?php echo $userData['location']; ?></p>
+      </div>
+    </div>
+    <div class="text-end">
+      <button type="button" class="btn text-pink" data-bs-toggle="modal" data-bs-target="#updateUser">
+        <strong>Editar Información</strong>
+      </button>
+    </div>
+    <div class="profile-card border rounded p-5 mt-5">
       <p><strong>Dirección:</strong> <?php echo $userData['address']; ?></p>
       <p><strong>Teléfono:</strong> <?php echo $userData['phone']; ?></p>
-      <p><strong>Género:</strong> <?php echo $userData['sex']; ?></p>
+      <p><strong>Sexo:</strong> <?php echo $userData['sex']; ?></p>
       <p><strong>Fecha de nacimiento:</strong> <?php echo date("d de F de Y", strtotime($userData['birthday'])); ?></p>
-      <button id="editButton">Editar Información</button>
     </div>
+
     <h4 class="text-pink mt-4">Historial de compras</h4>
-    <div class="purchase-history">
+    <div class="profile-card border rounded p-5 mt-5 text-center mb-5">
       <p>Sin compras por el momento...</p>
     </div>
 
@@ -165,7 +121,7 @@ $conn->close();
         <input type="hidden" id="userID" name="userID" value="<?php echo $userData['userID']; ?>">
         <button type="submit">Guardar Cambios</button>
     </form>
-    <?php endif; ?>
+    
   </div>
 
   <script>
@@ -179,5 +135,58 @@ $conn->close();
       });
     });
   </script>
+
+
+  <div class="modal fade" id="updateUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Actualizar datos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="userName" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="userName" placeholder="Juan Perez" required>
+            </div>
+            <div class="mb-3">
+              <label for="userAddress" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="userAddress" placeholder="El Progreso, Yoro" required>
+            </div>
+            <div class="mb-3">
+              <label for="userPhone" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="userPhone" placeholder="+504 3175 1455" required>
+            </div>
+            <div class="mb-3">
+              <label for="userSex" class="form-label">Sexo</label>
+              <select class="form-select" id="userSex" aria-label="Sexo">
+                <option selected>Elija su sexo</option>
+                <option value="1">Masculino</option>
+                <option value="2">Femenino</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="userDate" class="form-label">Fecha de nacimiento</label>
+              <input id="userDate" class="form-control" type="date" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Actualizar datos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php
+  include '../app/includes/footer.php';
+  ?>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </body>
+
 </html>
