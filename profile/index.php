@@ -12,21 +12,42 @@
 </head>
 <body>
 
-  <?php
-  // Conexión a la base de datos
-  $conn = new mysqli('localhost', 'root', '', 'floristeria_perla');
 
-  // Verificar la conexión
-  if ($conn->connect_error) {
-      die("Conexión fallida: " . $conn->connect_error);
+
+<?php
+ include_once '../../app/model/register.model.php';
+ include_once '../../app/conn/conn.php';
+
+
+$userID = 1; 
+$user = getUserByID($conn, $userID);
+
+if ($user) {
+  echo <?php
+  include_once '../../app/model/register.model.php';
+  include_once '../../app/conn/conn.php';
+  
+  $userID = 1; 
+  $user = getUserByID($conn, $userID);
+  
+  if ($user) {
+      $userName = htmlspecialchars($user["userName"]);
+      $userEmail = htmlspecialchars($user["userEmail"]);
+      $userAddress = htmlspecialchars($user["userAddress"]);
+      $userPhone = htmlspecialchars($user["userPhone"]);
+      $userSex = htmlspecialchars($user["userSex"]);
+      $userDate = htmlspecialchars($user["userDate"]);
+      $userPhoto = htmlspecialchars($user["userPhoto"]);
+  } else {
+      $userName = $userEmail = $userAddress = $userPhone = $userSex = $userDate = $userPhoto = "No disponible";
   }
-
-  // Obtener datos del usuario
-  $sql = "SELECT * FROM usuarios WHERE id = 1"; 
-  $result = $conn->query($sql);
-  $user = $result->fetch_assoc();
   ?>
-
+} else {
+  echo "No se encontró el usuario.";
+  
+}
+?>
+ 
   <div class="container pt-5">
     <h2 class="text-pink mt-5 pt-5 mb-5">Perfil de usuario</h2>
     <hr>
