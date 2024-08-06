@@ -40,7 +40,7 @@
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $offset = ($page - 1) * $limit;
 
-            $result = getProducts($conn, $limit, $offset);
+            $result = getProductsHome($conn, $limit, $offset);
             $totalProducts = getProductCount($conn);
             $totalPages = ceil($totalProducts / $limit);
 

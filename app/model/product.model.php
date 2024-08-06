@@ -73,6 +73,27 @@ function getAllProducts($conn)
     return $result;
 }
 
+function getProductsHome($conn, $limit, $offset)
+{
+    $sql = "SELECT P.productID, P.productName, P.description, P.price, P.inventary, P.image, C.categoryName, P.status 
+            FROM products P 
+            INNER JOIN categories C ON P.category = C.categoryID AND P.status = 1
+            LIMIT ? OFFSET ?";
+
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt === false) {
+        return json_encode(array('num_rows' => 0));
+    }
+
+    $stmt->bind_param('ii', $limit, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $stmt->close();
+
+    return $result;
+}
 function getProducts($conn, $limit, $offset)
 {
     $sql = "SELECT P.productID, P.productName, P.description, P.price, P.inventary, P.image, C.categoryName, P.status 
