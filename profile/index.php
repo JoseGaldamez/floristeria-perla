@@ -15,39 +15,30 @@
 
 
 <?php
- include_once '../../app/model/register.model.php';
- include_once '../../app/conn/conn.php';
+include_once '../../app/model/register.model.php';
+include_once '../../app/conn/conn.php';
 
-
+// Asignar el ID del usuario
 $userID = 1; 
+
+// Obtener datos del usuario
 $user = getUserByID($conn, $userID);
 
+// Verificar si se obtuvo el usuario
 if ($user) {
-  echo <?php
-  include_once '../../app/model/register.model.php';
-  include_once '../../app/conn/conn.php';
-  
-  $userID = 1; 
-  $user = getUserByID($conn, $userID);
-  
-  if ($user) {
-      $userName = htmlspecialchars($user["userName"]);
-      $userEmail = htmlspecialchars($user["userEmail"]);
-      $userAddress = htmlspecialchars($user["userAddress"]);
-      $userPhone = htmlspecialchars($user["userPhone"]);
-      $userSex = htmlspecialchars($user["userSex"]);
-      $userDate = htmlspecialchars($user["userDate"]);
-      $userPhoto = htmlspecialchars($user["userPhoto"]);
-  } else {
-      $userName = $userEmail = $userAddress = $userPhone = $userSex = $userDate = $userPhoto = "No disponible";
-  }
-  ?>
+    $userName = htmlspecialchars($user["userName"]);
+    $userEmail = htmlspecialchars($user["userEmail"]);
+    $userAddress = htmlspecialchars($user["userAddress"]);
+    $userPhone = htmlspecialchars($user["userPhone"]);
+    $userSex = htmlspecialchars($user["userSex"]);
+    $userDate = htmlspecialchars($user["userDate"]);
+    $userPhoto = htmlspecialchars($user["userPhoto"]);
 } else {
-  echo "No se encontró el usuario.";
-  
+    echo "No se encontró el usuario.";
+    $userName = $userEmail = $userAddress = $userPhone = $userSex = $userDate = $userPhoto = "No disponible";
 }
 ?>
- 
+
   <div class="container pt-5">
     <h2 class="text-pink mt-5 pt-5 mb-5">Perfil de usuario</h2>
     <hr>
