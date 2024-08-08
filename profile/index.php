@@ -17,7 +17,6 @@
 <body>
 
 
-
   <?php
   include '../app/includes/menu.php';
   include_once '../app/model/register.model.php';
