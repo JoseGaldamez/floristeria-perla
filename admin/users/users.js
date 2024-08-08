@@ -47,6 +47,72 @@ function clearSelectedCategory() {
     document.getElementById("description").value = "";
 }
 
+function updateModal(userID, status) {
+    document.getElementById("userID").value = userID;
+    document.getElementById("statusUser").value = status;
+    console.log({ userID, status });
+
+    if (status == 0) {
+        document.getElementById("reactivateButton").style.display = 'block';
+    } else {
+        document.getElementById("reactivateButton").style.display = 'none';
+    }
+
+}
+
+function makeSuperUser() {
+
+    const userID = document.getElementById("userID").value;
+
+    $.ajax({
+        type: 'POST',
+        url: '../../app/controller/user.controller.php',
+        data: {
+            action: 'makeSuper',
+            userID: Number.parseInt(userID),
+            categoryName: "categoryName",
+            description: "description"
+        },
+        success: function (response) {
+            console.log(response);
+
+            location.href = "/admin/users?success=true";
+        },
+        error: function (error) {
+            console.log('ERROR BLOCK');
+            console.log(error);
+        }
+    });
+
+
+}
+
+function reactivateUser() {
+
+    const userID = document.getElementById("userID").value;
+
+    $.ajax({
+        type: 'POST',
+        url: '../../app/controller/user.controller.php',
+        data: {
+            action: 'reactivate',
+            userID: Number.parseInt(userID),
+            categoryName: "categoryName",
+            description: "description"
+        },
+        success: function (response) {
+            console.log(response);
+
+            location.href = "/admin/users?success=true";
+        },
+        error: function (error) {
+            console.log('ERROR BLOCK');
+            console.log(error);
+        }
+    });
+
+
+}
 
 function deleteUser(userID) {
 

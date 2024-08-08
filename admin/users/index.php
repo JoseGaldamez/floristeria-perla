@@ -74,6 +74,10 @@
                     $statusText = $row["status"] ? "Activo" : "Inactivo";
 
                     echo '<tr><th scope="row">' . $row["userID"] . '</th><td>' . $row["userName"] . '</td><td>' . $row["userEmail"] . '</td><td class="' . $statusClass . '">' . $statusText . '</td><td>
+
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="updateModal('
+                        . $row["userID"] . ', ' . $row["status"] . ')"><i class="fa-solid fa-pencil"></i></button>
+
                 <button onclick="deleteUser( ' . $row["userID"] . ' )" class="btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
                 }
                 echo '</tbody></table>';
@@ -84,6 +88,37 @@
         </div>
 
     </div>
+
+
+    <!-- modal de eliminación -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+                            <use xlink:href="#exclamation-triangle-fill" />
+                        </svg>
+                        <div>
+                            Actualizaciones de usuarios
+                        </div>
+                        <input type="hidden" class="form-control" id="userID" placeholder="Nombre" required>
+                        <input type="hidden" class="form-control" id="statusUser" placeholder="Nombre" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button onclick="reactivateUser()" type="button" id="reactivateButton" class="btn btn-primary">Reactivate user</button>
+                    <button type="button" class="btn btn-primary">Convertir en Súper</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -11,6 +11,22 @@ if ($_POST) {
                 echo json_encode(array('success' => false, 'message' => "Algo falló creando la categoría"));
             }
         }
+
+        if ($_POST['action'] == "reactivate") {
+            if (reactivateUser($_POST['userID'])) {
+                echo json_encode(array('success' => true, 'message' => "usuarios creada correctamente"));
+            } else {
+                echo json_encode(array('success' => false, 'message' => "Algo falló creando la categoría"));
+            }
+        }
+
+        if ($_POST['action'] == "makeSuper") {
+            if (makeSuperUser($_POST['userID'])) {
+                echo json_encode(array('success' => true, 'message' => "usuarios creada correctamente"));
+            } else {
+                echo json_encode(array('success' => false, 'message' => "Algo falló creando la categoría"));
+            }
+        }
     } else {
         echo json_encode(array('success' => false, 'message' => "Parámetros faltantes."));
     }
