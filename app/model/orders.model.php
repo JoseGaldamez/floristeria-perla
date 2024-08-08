@@ -1,4 +1,14 @@
 <?php
+
+function getAllOrders($conn)
+{
+
+    $sql = "SELECT * FROM orders";
+    $result = $conn->query($sql);
+
+    return $result;
+}
+
 function getCountActiveOrderByUser($conn, $userID)
 {
     $sql = "SELECT * FROM orders WHERE userID=" . $userID . " AND status = 1";

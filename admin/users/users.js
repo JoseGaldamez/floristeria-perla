@@ -34,3 +34,40 @@ function createOrUpdateUser() {
         }
     });
 }
+
+function selectCategory(categoryID, categoryName, description) {
+    document.getElementById("idCategorySelected").value = categoryID;
+    document.getElementById("categoryName").value = categoryName;
+    document.getElementById("description").value = description;
+}
+
+function clearSelectedCategory() {
+    document.getElementById("idCategorySelected").value = "";
+    document.getElementById("categoryName").value = "";
+    document.getElementById("description").value = "";
+}
+
+
+function deleteUser(userID) {
+
+    $.ajax({
+        type: 'POST',
+        url: '../../app/controller/user.controller.php',
+        data: {
+            action: 'deleteCategory',
+            userID: Number.parseInt(userID),
+            categoryName: "categoryName",
+            description: "description"
+        },
+        success: function (response) {
+            console.log(response);
+
+            location.href = "/admin/users?success=true";
+        },
+        error: function (error) {
+            console.log('ERROR BLOCK');
+            console.log(error);
+        }
+    });
+
+}

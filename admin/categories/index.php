@@ -42,7 +42,7 @@
                 <h2>Administrar Categorias</h2>
             </div>
             <div class="col-3 text-end">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#addCategory" class="btn text-pink"> <i class="fa-solid fa-plus"></i> Agregar nueva</button>
+                <button onclick="clearSelectedCategory()" type="button" data-bs-toggle="modal" data-bs-target="#addCategory" class="btn text-pink"> <i class="fa-solid fa-plus"></i> Agregar nueva</button>
             </div>
         </div>
         <hr>
@@ -68,9 +68,14 @@
                 echo '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">Nombre</th><th scope="col">Descripción</th><th scope="col">Acciones</th></tr></thead><tbody>';
                 // output data of each row
                 while ($row = $result->fetch_assoc()) {
+                    $name = "'" . $row["categoryName"] . "'";
+                    $description = "'" . $row["description"] . "'";
+
                     echo '<tr><th scope="row">' . $row["categoryID"] . '</th><td>' . $row["categoryName"] . '</td><td>' . $row["description"] . '</td> <td>
-                    <button class="btn"><i class="fa-solid fa-pencil"></i></button>  
-                    <button class="btn"><i class="fa-solid fa-trash"></i></button></td> </tr>';
+
+                    <button onclick="selectCategory( ' . $row["categoryID"] . ', ' . $name . ', ' . $description . ' )" class="btn" data-bs-toggle="modal" data-bs-target="#addCategory"><i class="fa-solid fa-pencil"></i></button> 
+
+                    <button onclick="deleteCategory( ' . $row["categoryID"] . ' )" class="btn"><i class="fa-solid fa-trash"></i></button></td> </tr>';
                 }
 
                 echo '</tbody></table>';
@@ -91,6 +96,7 @@
                 </div>
                 <div class="modal-body">
                     <form>
+                        <input type="hidden" class="form-control" id="idCategorySelected" required>
                         <div class="mb-3">
                             <label for="categoryName" class="form-label">Nombre de categoria</label>
                             <input type="text" class="form-control" id="categoryName" placeholder="Nombre" required>
@@ -103,7 +109,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    <button onclick="createOrUpdateCategory()" type="button" class="btn btn-primary">Guardar</button>
+                    <button onclick="createCategory()" type="button" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>

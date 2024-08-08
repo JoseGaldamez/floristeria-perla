@@ -69,9 +69,12 @@
             if ($result->num_rows > 0) {
                 echo '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">Nombre</th><th scope="col">Correo Electrónico</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead><tbody>';
                 while ($row = $result->fetch_assoc()) {
-                    echo '<tr><th scope="row">' . $row["userID"] . '</th><td>' . $row["userName"] . '</td><td>' . $row["userEmail"] . '</td><td>' . $row["status"] . '</td><td>
-                <button class="btn"><i class="fa-solid fa-pencil"></i></button>  
-                <button class="btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
+
+                    $statusClass = $row["status"] ? "text-success" : "text-danger";
+                    $statusText = $row["status"] ? "Activo" : "Inactivo";
+
+                    echo '<tr><th scope="row">' . $row["userID"] . '</th><td>' . $row["userName"] . '</td><td>' . $row["userEmail"] . '</td><td class="' . $statusClass . '">' . $statusText . '</td><td>
+                <button onclick="deleteUser( ' . $row["userID"] . ' )" class="btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
                 }
                 echo '</tbody></table>';
             } else {
