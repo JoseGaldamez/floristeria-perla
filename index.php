@@ -49,7 +49,7 @@
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="col">
                 <div class="card card-custom ">
-                    <img src="app/assets/images/fm2.webp" alt="' . $row["productName"] . '">
+                    <img src="' . $row["image"] . '" alt="' . $row["productName"] . '">
                     <div class="card-body">
                         <h5 class="card-title">' . $row["productName"] . '</h5>
                         <p class="card-text">' . $row["description"] . '</p>

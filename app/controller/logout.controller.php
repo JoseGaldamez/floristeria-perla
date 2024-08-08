@@ -8,6 +8,7 @@ if ($_POST) {
         if ($_POST['closeSesion']) {
             session_start();
             unset($_SESSION["userID"]);
+            unset($_SESSION["roleID"]);
             echo json_encode(array('success' => true, 'message' => "Se ha cerrado sesion"));
         } else {
             echo json_encode(array('success' => false, 'message' => "No se cerro sesión"));

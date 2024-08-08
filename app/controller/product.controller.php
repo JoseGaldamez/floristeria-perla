@@ -28,7 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = saveNewProduct($conn, $productName, $description, $price, $inventary, $image_path, $category, $status);
         } else {
             $productId = $_POST['productId'];
-            $result = updateProduct($conn, $productId, $productName, $description, $price, $inventary, $image_path, $category, $status);
+
+            if ($image == "") {
+                $result = udpateNewProductWithoutImage($conn, $productId, $productName, $description, $price, $inventary, $category, $status);
+            } else {
+                $result = updateProduct($conn, $productId, $productName, $description, $price, $inventary, $image_path, $category, $status);
+            }
         }
 
         echo json_encode(['success' => $result]);
@@ -53,4 +58,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($categoriesArray);
     }
 }
-?>

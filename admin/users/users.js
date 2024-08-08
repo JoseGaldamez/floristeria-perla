@@ -18,7 +18,7 @@ function createOrUpdateUser() {
     $.ajax({
         type: 'POST',
         url: '../../app/controller/register.controller.php',
-        data: { username: userName, email: userEmail, password: userPassword, confirm_password: userPassword2 },
+        data: { username: userName, email: userEmail, password: userPassword, confirm_password: userPassword2, userType: 2 },
         success: function (response) {
             console.log('SUCCESS BLOCK');
             console.log(response);

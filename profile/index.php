@@ -23,7 +23,13 @@
   include_once '../app/conn/conn.php';
 
 
-  $userID = 6;
+  session_start();
+
+  $userID = 0;
+  if (isset($_SESSION['userID'])) {
+    $userID = $_SESSION['userID'];
+  }
+
   $user = getUserByID($conn, $userID);
 
   if ($user->num_rows > 0) {
@@ -44,7 +50,7 @@
       }
     }
   } else {
-    header('Location: /login');
+    // header('Location: /login');
   }
   ?>
 
@@ -89,8 +95,31 @@
     </div>
 
     <h4 class="text-pink mt-4">Historial de compras</h4>
-    <div class="profile-card border rounded p-5 mt-5 text-center mb-5">
-      <p>Sin compras por el momento...</p>
+    <div class="profile-card border rounded p-5 mt-5 mb-5">
+
+      <?php
+      include_once '../app/model/order.model.php';
+
+      $resultCompleteOrders = getCompletedOrderByUser($conn, $userID);
+
+      if ($resultCompleteOrders->num_rows > 0) {
+
+        echo '<table class="table"><thead><tr><th scope="col">#</th><th scope="col text-start">Detalles</th><th scope="col">Fecha</th><th scope="col">Total</th></tr></thead><tbody>';
+
+        while ($rowOrder = $resultCompleteOrders->fetch_assoc()) {
+          echo '<tr><th scope="row">' . $rowOrder["orderID"] . '</th><td>' . $rowOrder["details"] . '</td><td>' . $rowOrder["updated_at"] . '</td> <td>' . $rowOrder["total"] . '</td> </tr>';
+        }
+
+        echo '</tbody></table>';
+      } else {
+        echo '<p class="text-center">Sin compras por el momento...</p>';
+      }
+
+
+
+      ?>
+
+
     </div>
   </div>
 

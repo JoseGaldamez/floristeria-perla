@@ -1,6 +1,6 @@
 <?php
 
-function registerNewUser(string $username, string $email, string $password)
+function registerNewUser(string $username, string $email, string $password, int $userType)
 {
 
     include_once '../conn/conn.php';
@@ -18,6 +18,31 @@ function registerNewUser(string $username, string $email, string $password)
 
     $wasOk = $statement->execute();
     $statement->close();
+
+    // get userCreated
+    $sqlGetUser = 'SELECT * FROM users WHERE userEmail=?';
+    $statementGetUser = $conn->prepare($sqlGetUser);
+    if ($statementGetUser === false) {
+        return false;
+    }
+
+    $statementGetUser->bind_param('s', $email);
+    $statementGetUser->execute();
+    $resultUser = $statementGetUser->get_result();
+    $user = $resultUser->fetch_assoc();
+
+    $userID = $user['userID'];
+
+    $statementGetUser->close();
+
+    // Add role
+    $sqlRole = "INSERT INTO users_roles (userID, roleID) VALUES (?, ?)";
+    $statementRole = $conn->prepare($sqlRole);
+    $statementRole->bind_param('ii', $userID, $userType);
+
+    $wasOk = $statementRole->execute();
+    $statementRole->close();
+
     $conn->close();
 
     return $wasOk;

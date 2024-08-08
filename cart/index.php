@@ -7,6 +7,7 @@
     <title>Floristería Perla | Carrito de compras</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../styles/global.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -17,7 +18,29 @@
     <main class="container pt-5 mb-5">
         <h2 class="mt-5 pt-5">Carrito de compras</h2>
 
-        <div class="list-of-products border rounded p-2 mt-3">
+        <?php
+
+        $userID = 0;
+        if (isset($_SESSION['userID'])) {
+            $userID = $_SESSION['userID'];
+        }
+
+
+        if ($_SERVER['REQUEST_URI'] == "/") {
+            include_once 'app/conn/conn.php';
+            include_once 'app/model/orders.model.php';
+        } else {
+            include_once '../app/model/orders.model.php';
+            include_once '../app/conn/conn.php';
+        }
+
+        $resultCount = getCountActiveOrderByUser($conn, $userID);
+
+        if ($resultCount == 0) {
+            echo '<div class="profile-card border rounded p-5 mt-5 text-center mb-5"><p>Aún no hay items en el carrito...</p></div>';
+        } else {
+
+            echo '<div class="list-of-products border rounded p-2 mt-3">
 
             <div class="row p-3">
                 <div class="col-6">
@@ -29,57 +52,42 @@
                 <div class="col-3 text-end">
                     <h5>Precio</h5>
                 </div>
-            </div>
+            </div>';
 
+            $products = getProductFromOrder($conn, $userID);
+            $isv = 0;
+            $subtotal = 0;
+            $orderID = 0;
 
-            <hr>
-            <article class="row mt-3 p-3 align-middle">
-                <div class="col-6">
-                    <div class="row align-middle">
-                        <div class="col-2 align-self-center">
-                            <figure class="cart-figure">
-                                <img class="img-thumbnail cart-image" src="../app/assets/images/girasol.jpg" alt="Girasoles">
-                            </figure>
-                        </div>
-                        <div class="col-8 align-self-center">
-                            <h4>Girasoles Ramo</h4>
-                            <p>Ramos de girasoles, 1 girasol con detalles estéticos.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3 align-self-center text-center">
-                    <h5>1</h5>
-                </div>
-                <div class="col-3 text-end align-self-center">
-                    <h5>L. 750.00</h5>
-                </div>
-            </article>
-
-
-            <hr>
-            <article class="row mt-3 p-3 align-middle">
-                <div class="col-6">
-                    <div class="row align-middle">
-                        <div class="col-2 align-self-center">
-                            <figure class="cart-figure">
-                                <img class="img-thumbnail cart-image" src="../app/assets/images/rosas2.jpg" alt="Rosas">
-                            </figure>
-                        </div>
-                        <div class="col-8 align-self-center">
-                            <h4>Caja de Rosas</h4>
-                            <p>Arreglo en forma de caja con 6 rosas rojas.</p>
+            while ($row = $products->fetch_assoc()) {
+                echo '<hr /> <article class="row mt-3 p-3 align-middle">
+                    <div class="col-6">
+                        <div class="row align-middle">
+                            <div class="col-2 align-self-center">
+                                <figure class="cart-figure">
+                                    <img class="img-thumbnail cart-image" src="' . $row['image'] . '" alt="Girasoles">
+                                </figure>
+                            </div>
+                            <div class="col-8 align-self-center">
+                                <h4>' . $row['productName'] . '</h4>
+                                <p>' . $row['description'] . '</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-3 align-self-center text-center">
-                    <h5>1</h5>
-                </div>
-                <div class="col-3 text-end align-self-center">
-                    <h5>L. 1,250.00</h5>
-                </div>
-            </article>
+                    <div class="col-3 align-self-center text-center">
+                        <h5>' . $row['many'] . '</h5>
+                    </div>
+                    <div class="col-3 text-end align-self-center">
+                        <h5>L. ' . $row['price'] . '</h5>
+                    </div>
+                </article> ';
+                $isv += $row['impuesto'];
+                $subtotal += $row['price'];
+                $orderID = $row['orderID'];
+            }
 
-        </div>
+
+            echo '</div>
 
         <div class="total p-3 mt-5">
 
@@ -89,7 +97,7 @@
                     <h5>Subtotal</h5>
                 </div>
                 <div class="col-6 text-end">
-                    <h5>L. 2,000.00</h5>
+                    <h5>L. ' . $subtotal . '</h5>
                 </div>
 
             </div>
@@ -100,7 +108,7 @@
                     <h5>Impuestos (15%)</h5>
                 </div>
                 <div class="col-6 text-end">
-                    <h5>L. 300.00</h5>
+                    <h5>L. ' . $isv . '</h5>
                 </div>
 
             </div>
@@ -111,7 +119,7 @@
                     <h4>Total a pagar</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <h4>L. 2,300.00</h4>
+                    <h4>L. ' . $subtotal + $isv . '</h4>
                 </div>
 
             </div>
@@ -122,7 +130,12 @@
             <button type="button" class="btn btn-pink-primary" data-bs-toggle="modal" data-bs-target="#PaymentForm">
                 Pagar
             </button>
-        </div>
+        </div>';
+        }
+
+        ?>
+
+
 
         <!-- Modal -->
         <div class="modal fade" id="PaymentForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -136,7 +149,7 @@
                         <form>
                             <div class="mb-3">
                                 <label for="numbercard" class="form-label">Número de tarjeta</label>
-                                <input type="text" class="form-control" id="numbercard" placeholder="1234-12324-1234-1234" required>
+                                <input type="text" maxlength="16" class="form-control" id="numbercard" placeholder="1234 12324 1234 1234" required>
                             </div>
                             <div class="row">
                                 <div class="mb-3 col-8">
@@ -145,7 +158,7 @@
                                 </div>
                                 <div class="mb-3 col-4">
                                     <label for="expirationDate" class="form-label">Expiración</label>
-                                    <input type="text" class="form-control" id="expirationDate" placeholder="00/00" required>
+                                    <input type="text" maxlength="5" class="form-control" id="expirationDate" placeholder="00/00" required>
                                 </div>
                             </div>
                             <hr>
@@ -154,10 +167,12 @@
                                 <textarea class="form-control" id="details" rows="5" placeholder="Dirección adicional, fecha de entrega, mensaje de tarjeta, etc."></textarea>
                             </div>
                         </form>
+                        <div id="alerts" class="mt-5">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Procesar pago</button>
+                        <button onclick="pay(<?php echo $orderID . ' , ' . ($subtotal + $isv); ?>)" type="button" class="btn btn-primary">Procesar pago</button>
                     </div>
                 </div>
             </div>
@@ -171,6 +186,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="cart.js"></script>
 </body>
 
 </html>

@@ -4,6 +4,7 @@ function getCountActiveOrderByUser($conn, $userID)
     $sql = "SELECT * FROM orders WHERE userID=" . $userID . " AND status = 1";
     $result = $conn->query($sql);
 
+    $orderId = 0;
     while ($row = $result->fetch_assoc()) {
         $orderId = $row['orderID'];
     }
@@ -69,7 +70,7 @@ function createNewOrderToUser($conn, $userID, $productID)
     $statement = $conn->prepare($sqlNewOrder);
 
     $orderStatus = 1;
-    $details = "";
+    $details = "Orden activa";
     $total = 0.0;
 
     $statement->bind_param('iisd', $userID, $orderStatus, $details, $total);
@@ -120,4 +121,19 @@ function createNewOrderToUser($conn, $userID, $productID)
 
     $conn->close();
     return $messageResponse;
+}
+
+function getProductFromOrder($conn, $userID)
+{
+    $result = getActiveOrderByUser($conn, $userID);
+
+    $orderId = 0;
+    while ($row = $result->fetch_assoc()) {
+        $orderId = $row['orderID'];
+    }
+
+    $sqlProductoOfOrder = "SELECT *, sum(o.productPrice) as price, sum(o.isv) as impuesto, sum(o.quantity) as many FROM floristeria_perla.orders_products as o inner join floristeria_perla.products as p ON p.productID = o.productID WHERE orderID = " . $orderId . " GROUP BY o.productID;";
+    $resultProductoOfOrder = $conn->query($sqlProductoOfOrder);
+
+    return $resultProductoOfOrder;
 }

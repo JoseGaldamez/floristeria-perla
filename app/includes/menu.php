@@ -49,6 +49,16 @@
 
                     <?php
                     session_start();
+
+                    $userID = 0;
+                    if (isset($_SESSION['userID'])) {
+                        $userID = $_SESSION['userID'];
+                    }
+
+                    if (isset($_SESSION['roleID']) && $_SESSION['roleID'] != 1) {
+                        header('Location: /admin');
+                    }
+
                     ?>
 
                     <li class="nav-item">
@@ -62,6 +72,8 @@
                                             ?>" href="/cart">
                             Carrito
                             <?php
+
+
                             if ($_SERVER['REQUEST_URI'] == "/") {
                                 include_once 'app/conn/conn.php';
                                 include_once 'app/model/orders.model.php';
@@ -70,7 +82,7 @@
                                 include_once '../app/conn/conn.php';
                             }
 
-                            $resultCount = getCountActiveOrderByUser($conn, 6);
+                            $resultCount = getCountActiveOrderByUser($conn, $userID);
 
                             echo '<span class="badge cart-count rounded-pill text-bg-danger">' . $resultCount . '</span>';
 

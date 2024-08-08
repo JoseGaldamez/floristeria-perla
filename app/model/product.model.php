@@ -1,5 +1,20 @@
 <?php
 
+function udpateNewProductWithoutImage($conn, int $productId, string $productName, string $description, float $price, int $inventary, int $category, int $status)
+{
+    $sql = 'UPDATE products SET productName=?, description=?, price=?, inventary=?, category=?, status=? WHERE productID=?';
+    $statement = $conn->prepare($sql);
+    if ($statement === false) {
+        die("Error en la preparación de consulta 'products'" . $conn->error);
+    }
+
+    $statement->bind_param('ssdiiii', $productName, $description, $price, $inventary, $category, $status, $productId);
+
+    $wasOk = $statement->execute();
+
+    $statement->close();
+    return $wasOk;
+}
 function saveNewProduct($conn, string $productName, string $description, float $price, int $inventary, string $image, int $category, int $status)
 {
     $sql = 'INSERT INTO products (productName, description, price, inventary, created_at, image, category, status) VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)';

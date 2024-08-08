@@ -22,6 +22,21 @@ function login(string $email, string $password)
         session_start();
         $_SESSION['userID'] = $user['userID'];
 
+        $sqlRole = 'SELECT * FROM users_roles WHERE userID=?';
+        $statementRole = $conn->prepare($sqlRole);
+        if ($statementRole === false) {
+            return false;
+        }
+
+        $statementRole->bind_param('i', $user['userID']);
+        $statementRole->execute();
+        $resultRole = $statementRole->get_result();
+        $role = $resultRole->fetch_assoc();
+
+        $_SESSION['roleID'] = $role['roleID'];
+
+        $resultRole->close();
+
         return true;
     } else {
         return false;
