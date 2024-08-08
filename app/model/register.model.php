@@ -31,3 +31,41 @@ function getAllUsers($conn)
     $conn->close();
     return $result;
 }
+
+function getUserByID($conn, $userID)
+{
+    $sql = "SELECT * FROM users WHERE userID = " . $userID;
+    $result = $conn->query($sql);
+
+    return $result;
+}
+
+function getOrCreateUserProfile($conn, $userID, $userName)
+{
+    $sql = "SELECT * FROM profiles WHERE userID = " . $userID;
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        return $result;
+    }
+    echo "No hay perfil creado";
+
+    $sql = "INSERT INTO profiles (userID, name, sex, phone, address) VALUES (?, ?, ?, ?, ?)";
+
+    $statement = $conn->prepare($sql);
+    $sex = 0;
+    $phone = '';
+    $address = '';
+
+    $statement->bind_param('isiss', $userID, $userName, $sex, $phone, $address);
+    $statement->execute();
+    $statement->close();
+
+
+    $sql = "SELECT * FROM profiles WHERE userID = " . $userID;
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        return $result;
+    }
+}
