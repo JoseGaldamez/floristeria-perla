@@ -35,6 +35,11 @@
             include_once 'app/model/product.model.php';
             include_once 'app/conn/conn.php';
 
+            $userID = 0;
+            if (isset($_SESSION['userID'])) {
+                $userID = $_SESSION['userID'];
+            }
+
             // Variables de paginación
             $limit = 20; // numero de productos por página
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -54,7 +59,7 @@
                         <h5 class="card-title">' . $row["productName"] . '</h5>
                         <p class="card-text">' . $row["description"] . '</p>
                         <div class="footer-card-product">
-                        <button onclick="addToCart(' . $row["productID"] . ')" class="btn text-pink"><i class="fa-solid fa-plus"></i> Agregar</button>
+                        <button onclick="addToCart(' . $row["productID"] . ', ' . $userID . ')" class="btn text-pink"><i class="fa-solid fa-plus"></i> Agregar</button>
                         <span class="price">L. ' . $row["price"] . '</span>
                         </div>
                     </div>

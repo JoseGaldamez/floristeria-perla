@@ -1,4 +1,8 @@
-function addToCart(productID) {
+function addToCart(productID, userID) {
+
+    if (userID == 0) {
+        location.href = "/login";
+    }
 
 
     $.ajax({
